@@ -11,7 +11,7 @@ object ReadFileOps extends App{
   def readFile(): Unit ={
 
     println("Love me Do")
-    val source = scala.io.Source.fromFile("C:\\Users\\465068\\Repo\\scalapractise\\hello\\milkyway.json")
+    val source = scala.io.Source.fromFile("milkyway.json")
     val lines =  source.getLines()
 
     for( line <- lines){

@@ -8,15 +8,10 @@ import com.mongodb.client.MongoDatabase
 //import com.mongodb.casbah.commons.MongoDBObject
 
 object Mongotest extends App {
-  val ur: String = "mongodb://sam4sunsine:ItsSex#1" +
-                    "@cluster0-shard-00-00-hyxqi.mongodb.net:27017/" +
-                  "test?" +
-                  "ssl=true&" +
-                  "replicaSet=Cluster0-shard-0&" +
-                  "authSource=admin"
+  val ur: String = "mongodb://localhost:2707"
   val uri = MongoClientURI(ur)
   // get DB server connection
-  val mongoClient = MongoClient(uri)
+  val mongoClient = MongoClient("localhost",27017)
 
   val db = mongoClient("databaseName")
   val collection = db("collectionName")

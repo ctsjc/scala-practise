@@ -1,1 +1,16 @@
+{"_id":{"$oid":"5949e12a4cb200478209a1f9"},"word":"I","type":"noun"}
 {"_id":{"$oid":"5949e12a4cb200478209a1fb"},"word":"would like to see","type":"phrase","nature":"action","structure":{"sequence":"noun1-would like to see-noun2-as-sentence2","who like to see":"noun1","what like to see":"noun2","why like to see":"sentence2"}}
+{"_id":{"$oid":"5949e12a4cb200478209a1fd"},"word":"better","type":"adjective"}
+{"_id":{"$oid":"5949e12a4cb200478209a1ff"},"word":"read","type":"noun"}
+{"_id":{"$oid":"5949e12a4cb200478209a201"},"word":"and","type":"conjuction"}
+{"_id":{"$oid":"5949e12a4cb200478209a203"},"word":"write","type":"noun"}
+{"_id":{"$oid":"5949e12a4cb200478209a205"},"word":"speed","type":"noun","template":{"which speed":["read","write"],"how much speed":12}}
+{"_id":{"$oid":"5949e12a4cb200478209a207"},"word":"as","type":"conjuction"}
+{"_id":{"$oid":"5949e12a4cb200478209a209"},"word":"this","type":"pronoun"}
+{"_id":{"$oid":"5949e12a4cb200478209a20b"},"word":"card","type":" noun","template":{"possession":{"noun":"speed"},"actions":{"verb":"advertize"}}}
+{"_id":{"$oid":"5949e12a4cb200478209a20d"},"word":"advertises","type":"verb","template":{"what it advertize":"noun","Do user getting as per advertized":true}}
+{"_id":{"$oid":"5949e12a4cb200478209a20f"},"word":"has","type":"verb","template":{"structures":{"sequence":"noun1-has-equality term1-noun2","who possess":"noun1","what possess":"noun2","Measurement of possession":{"equality matrix":"equality term1"}}}}
+{"_id":{"$oid":"5949e12a4cb200478209a211"},"word":"no where near","type":"equality term"}
+{"_id":{"$oid":"5949e12a4cb200478209a213"},"word":"it","type":"pronoun"}
+{"_id":{"$oid":"594a8be54cb200478209c3da"},"word":"the","type":"article","sequence":"article-noun"}
+
