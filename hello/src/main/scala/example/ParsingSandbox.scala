@@ -36,6 +36,7 @@ object ParsingSandbox extends App{
   // 2  remove one word from end,
   // 3  if found then check the next sequence
   var phraseList:List[phraseNcount]=List()
+  var phraseList_duplicates:List[phraseNcount]=List()
   for(m <- wordlist.indices) {
     if(m!=0)
       wordlist = wordlist.tail
@@ -50,21 +51,27 @@ object ParsingSandbox extends App{
   }//end of for
   phraseList = phraseList.reverse
 
-  phraseList.map(_.phrase).foreach(println(_))
-
-
-  /*compare two list and returns the index which tells how much % both are similar in order*/
-  def similarityIndex(a:List[String], b:List[String]): Unit ={
-    // check does two list contains the common words
-    var wordPresent=false
-    var commonWords :List[String]=List()
-    for(a1<-a){
-      if (b.contains(a1) ){
-        wordPresent = true
-        commonWords=a1::commonWords
+  for(i <- phraseList.indices){
+    for(j <- (i+1) until phraseList.length){
+      if(similarityIndex(phraseList,phraseList(i).phrase,phraseList(j).phrase)){
+        phraseList_duplicates=phraseList(j)::phraseList_duplicates
       }
     }
-    println(commonWords)
+  }
+  phraseList = phraseList diff  phraseList_duplicates
+  phraseList.map(_.phrase).foreach(println(_))
+
+  /*compare two list and returns the index which tells how much % both are similar in order*/
+  def similarityIndex(phraseList:List[phraseNcount],a:List[wordIndex], b:List[wordIndex]): Boolean ={
+     var flag=a.map(_.w).mkString(delimintor).contains(b.map(_.w).mkString(delimintor))
+    var v:List[wordIndex]=List()
+    if(flag) {
+      a.foreach { (wi) =>
+        v = v:::b.filter(_.i == wi.i)
+
+      }
+    }
+    if(v.size>0) true else false
   }
 }
 case class phraseNcount(phrase:List[wordIndex], dictionaryEntry:String)
