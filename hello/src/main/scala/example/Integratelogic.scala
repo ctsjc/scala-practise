@@ -4,7 +4,10 @@ import example.Mongotest.collection
 import org.json4s._
 import org.json4s.jackson.JsonMethods._
 object Integratelogic extends App {
-  println("Hello World")
+  println("Hello World\nStep 1: read the sentence, " +
+    "and then check into db, does that word present in the dictionary, the largest word" +
+    "will get the count" +
+    "and then put them into map or list..")
   var word="would like to see"
 
   var sentenceMap:Map[String,String]=Map("I"->"noun1",
@@ -32,6 +35,7 @@ object Integratelogic extends App {
       var m :List[String]=v("sequence").toString.split("-").toList
       println(">>"+m)
       // find things before would like to
+
       // find things after would like to till as
       // after as
 

@@ -1,13 +1,8 @@
 package example
 
-import java.util
-
 object ParsingSandbox extends App{
   println("Hello World")
   var sentence:String="I would like to see better read and write speed as this card has nowhere near the speed it advertise"
-  //sentence="a b c d e"
-  // Check into database,
-  // Check the type sequence.--- speed it advertise => noun-pro noun-verb => verb-noun -> noun
 
   var galaxy=Map("I"->"noun",
     "would like to see"->"verb",
@@ -30,7 +25,12 @@ object ParsingSandbox extends App{
     "see"->"verb"
   )
   val delimintor = " "
-  var wordlist=sentence.split(delimintor).toList
+  var wordlist=sentence.split(delimintor).toList.zipWithIndex.map{
+    case (e,i)=>
+      wordIndex(e,i)
+  }
+
+  //wordlist1 foreach(println(_))
 
   // 1  whole sentence check into dictionary,
   // 2  remove one word from end,
@@ -40,18 +40,32 @@ object ParsingSandbox extends App{
     if(m!=0)
       wordlist = wordlist.tail
     for (i <- wordlist.indices) {
-      var m = wordlist splitAt (wordlist.length-i)
-      var possiblePhrase=m._1.mkString(delimintor)
+      val m = wordlist splitAt (wordlist.length-i)
+
+      val possiblePhrase=m._1.map(_.w).mkString(delimintor)
       if(galaxy.contains(possiblePhrase)) {
         phraseList=phraseNcount(m._1,galaxy(possiblePhrase))::phraseList
       }
-      //println(m._2.mkString(" ") )
-      //println("---------"+ galaxy.contains(possiblePhrase))
-
     }//end of for
   }//end of for
   phraseList = phraseList.reverse
-  // now group the phrases which are common
-   phraseList.foreach(println(_))
+
+  phraseList.map(_.phrase).foreach(println(_))
+
+
+  /*compare two list and returns the index which tells how much % both are similar in order*/
+  def similarityIndex(a:List[String], b:List[String]): Unit ={
+    // check does two list contains the common words
+    var wordPresent=false
+    var commonWords :List[String]=List()
+    for(a1<-a){
+      if (b.contains(a1) ){
+        wordPresent = true
+        commonWords=a1::commonWords
+      }
+    }
+    println(commonWords)
+  }
 }
-case class phraseNcount(phrase:List[String], dictionaryEntry:String)
+case class phraseNcount(phrase:List[wordIndex], dictionaryEntry:String)
+case class wordIndex(w:String,i:Int)
