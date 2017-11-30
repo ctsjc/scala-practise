@@ -10,12 +10,6 @@ object Integratelogic extends App {
     "and then put them into map or list..")
   var word="would like to see"
 
-  var sentenceMap:Map[String,String]=Map("I"->"noun1",
-    "would like to see"->"verb",
-    "better read and write speed"->"noun2",
-    "as"->"conjuction",
-    "this card has nowhere near the speed it advertises"->"sentence2"
-  )
   // search the word information in dictionary
   var dictionary_entry:String=searchWordInDb(word)
   //println(dictionary_entry)
@@ -34,17 +28,9 @@ object Integratelogic extends App {
       })
       var m :List[String]=v("sequence").toString.split("-").toList
       println(">>"+m)
-      // find things before would like to
-
-      // find things after would like to till as
-      // after as
-
-
     }
     case "verb"=>verb(entrytype)
   }
-
-
 
   def searchWordInDb(word: String):String = {
     val mongoClient = MongoClient("localhost",27017)
