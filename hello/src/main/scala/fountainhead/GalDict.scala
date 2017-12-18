@@ -8,7 +8,7 @@ object GalDict {
     "read" -> "noun",
     "and" -> "conjunction",
     "write" -> "noun",
-    "speed" -> "verb",
+    "speed" -> "noun",
     "as" -> "conjuction",
     "this" -> "pronoun",
     "card" -> "noun",
