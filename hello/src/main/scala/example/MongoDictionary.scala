@@ -11,14 +11,14 @@ object Mongotest extends App {
   val ur: String = "mongodb://localhost:2707"
   val uri = MongoClientURI(ur)
   // get DB server connection
-  val mongoClient = MongoClient("localhost",27017)
+  val mongoClient = MongoClient("localhost", 27017)
 
   val db = mongoClient("db")
   val collection = db("foo")
 
   println("all docs:")
-  collection.find() foreach( println _)
-  var word="would like to see"
+  collection.find() foreach (println _)
+  var word = "would like to see"
   println(s"word ::  $word")
   val qq = MongoDBObject("word" -> word)
   var v = collection.findOne(qq).getOrElse()

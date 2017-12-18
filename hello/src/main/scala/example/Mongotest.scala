@@ -11,7 +11,7 @@ object Mongotest extends App {
   val ur: String = "mongodb://localhost:2707"
   val uri = MongoClientURI(ur)
   // get DB server connection
-  val mongoClient = MongoClient("localhost",27017)
+  val mongoClient = MongoClient("localhost", 27017)
 
   val db = mongoClient("databaseName")
   val collection = db("collectionName")
@@ -44,7 +44,7 @@ object Mongotest extends App {
 
 
   // create an index
- // collection.ensureIndex("username") // there is also createIndex
+  // collection.ensureIndex("username") // there is also createIndex
 
   // query interface
   // number of docs
