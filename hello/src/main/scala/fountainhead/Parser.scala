@@ -1,12 +1,9 @@
 package fountainhead
 
 
-object Parser extends App{
-  val delimintor = " "
-  var text: String = "I would like to see better read and write speed as this card has no where near the speed it advertise"
-  var phraseList=getPhraseList(text,0)
+object Parser{
+  val delimintor:String = " "
 
-  getNounPhraseList(phraseList)
 
   /* This method returns the possible phrases*/
   def getPhraseList(text:String,version:Int):List[phrase]={
@@ -15,7 +12,7 @@ object Parser extends App{
     phraseList
   }
 
-  def getNounPhraseList(list:List[phrase]):List[phrase]={
+  def getNounPhraseList(list:List[phrase]):List[phrase2]={
     var npList:List[phrase]=List()
     // Read each word from the list
     // check in rule engine for matching sequence
@@ -44,7 +41,7 @@ object Parser extends App{
         // if index is not present then add it
         val px = p.find({(pi) =>
           val intest=pi.ii  intersect dlist(i)._2
-          !intest.isEmpty && pi.w.contains(dlist(i)._1)
+          intest.nonEmpty && pi.w.contains(dlist(i)._1)
         })
         px match {
           case Some(item)=>{ nounPhraseList = nounPhraseList :+ phrase2(item.w, item.ii,item.t)
@@ -57,8 +54,7 @@ object Parser extends App{
         }
     }//end of loop
     println("&*&*&*")
-    nounPhraseList.foreach(println(_))
-    npList
+    nounPhraseList
   }
 
 
