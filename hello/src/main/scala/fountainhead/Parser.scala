@@ -53,7 +53,7 @@ object Parser{
             }
         }
     }//end of loop
-    println("&*&*&*")
+
     nounPhraseList
   }
 
