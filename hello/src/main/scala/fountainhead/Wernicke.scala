@@ -56,7 +56,19 @@ object Wernicke  extends  App {
   // noow map them into
   var ml =p.template.structures.head.sequence.split("-") zip leftRight
   val mk=ml.toMap
-  println("sqk "+mk)
+
+
+  // convert to the verb questionaries
+  println("----")
+
+  //p.template.structures(0).question.foreach( m => println(m._1+" - "+ mk.get(m._2.toString)))
+  // change to clean format
+  var vqm:Map[String,String]=Map()
+  p.template.structures.head.question.foreach( m => vqm = vqm + (m._1->
+    mk.get(m._2.toString).get.map(_.w).mkString(" ") ))
+
+  vqm.foreach( m => println(m._1+"-"+m._2 ))
 
 }
 //phraseList = phraseList :+ phrase(splittedList._1, GalDict.galaxy(possiblePhrase))
+case class verbQuestion(w:String, q:Map[String, String])
