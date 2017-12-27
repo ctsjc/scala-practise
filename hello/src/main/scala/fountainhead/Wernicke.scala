@@ -9,30 +9,29 @@ object Wernicke  extends  App {
   var phraseList = getPhraseList(text, 0)
   var nounPhraseList = getNounPhraseList(phraseList)
 
-  var p = dictionaryEntryOfMainVerb(nounPhraseList)
+  var dictEntryVerb = dictionaryEntryOfMainVerb(nounPhraseList)
   nounPhraseList.map(_.w).foreach(println(_))
-  //println(">"+p.template.structures(0).variation)
-  // now find all  those thing which are left and right to `would like to see` And `as`
-  var dseq = p.template.structures(0).sequence.split("-").toList
-  var dss:List[Int]=List()
-
-  p.template.structures(0).variation.split("-").foreach( (v)=>{
-
-    dss=dss :+ nounPhraseList.map(_.w).indexOf(v)
-  })
 
 
-  var dsf:List[phrase2]=List()
+  var indexOf_wouldLikeToSee_As_variation=dictEntryVerb.template.structures.head.variation.split("-").map((v)=>{
+    nounPhraseList.map(_.w).indexOf(v)
+  }).toList
+
+  //var dsf:List[phrase2]=List()
   var sc=0
+  // convert the list into words which are left to would like to see and right of it.
+  // List[1] = I
+  // List[2] = would like to see
+  // List[3] = better read and write speed etc.
   var leftRight:List[List[phrase2]]=List()
   var left:List[phrase2]=List()
   for(index <- nounPhraseList.indices){
     // last list
-    if(sc==dss.length){
+    if(sc==indexOf_wouldLikeToSee_As_variation.length){
       left = left :+nounPhraseList(index)
     }
     // only one element here. its the joint
-    else if(index==dss(sc)){
+    else if(index==indexOf_wouldLikeToSee_As_variation(sc)){
       sc+=1
       // grab old list
       leftRight = leftRight :+ left
@@ -51,24 +50,12 @@ object Wernicke  extends  App {
   }
   leftRight = leftRight :+ left
 
-  println("==========="+leftRight)
-
   // noow map them into
-  var ml =p.template.structures.head.sequence.split("-") zip leftRight
-  val mk=ml.toMap
+  // 1->I, 2->would like to see
+  var mapOfIndexToPart =dictEntryVerb.template.structures.head.sequence.split("-") zip leftRight toMap
 
+  var questionAnswer=dictEntryVerb.template.structures.head.question.map(m => m._1 -> mapOfIndexToPart(m._2.toString).map(_.w).mkString(" ") )
+  questionAnswer.foreach(m => println(m._1+"-"+m._2 ))
+}//end of object
 
-  // convert to the verb questionaries
-  println("----")
-
-  //p.template.structures(0).question.foreach( m => println(m._1+" - "+ mk.get(m._2.toString)))
-  // change to clean format
-  var vqm:Map[String,String]=Map()
-  p.template.structures.head.question.foreach( m => vqm = vqm + (m._1->
-    mk.get(m._2.toString).get.map(_.w).mkString(" ") ))
-
-  vqm.foreach( m => println(m._1+"-"+m._2 ))
-
-}
-//phraseList = phraseList :+ phrase(splittedList._1, GalDict.galaxy(possiblePhrase))
 case class verbQuestion(w:String, q:Map[String, String])
