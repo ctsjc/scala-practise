@@ -5,7 +5,8 @@ import fountainhead.dict.{DEntry, DStructure, DTemplate}
 import org.json4s.DefaultFormats
 import org.json4s.jackson.JsonMethods.parse
 
-case class VerbQuestion(w:String, q:Map[String, String])
+case class VerbQuestion(w:String, q:Map[String, T1])
+case class T1(word:String, typ:String)
 
 object VerbParser {
   var json_dictionary:List[DEntry]=populate()
@@ -118,7 +119,9 @@ object VerbParser {
     // noow map them into
     // 1->I, 2->would like to see
     var mapOfIndexToPart =dictEntryVerb.template.structures.head.sequence.split("-") zip leftRight toMap
-    var questionAnswer=dictEntryVerb.template.structures.head.question.map(m => m._1 -> mapOfIndexToPart(m._2.toString).map(_.w).mkString(" ") )
+
+    mapOfIndexToPart.foreach{case (key, value) => println (key + "-->" + value)}
+    var questionAnswer=dictEntryVerb.template.structures.head.question.map(m => m._1 -> T1(mapOfIndexToPart(m._2.toString).map(_.w).mkString(" "),mapOfIndexToPart(m._2.toString).map(_.t).mkString(" ")) )
     VerbQuestion(dictEntryVerb.word,questionAnswer)
   }
 }

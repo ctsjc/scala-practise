@@ -8,8 +8,9 @@ object Wernicke  extends  App {
   var text: String = "I would like to see better read and write speed as this card has no where near the speed it advertise"
   var phraseList = getPhraseList(text, 0)
   var nounPhraseList = getNounPhraseList(phraseList)
-
   var dictEntryVerb = dictionaryEntryOfMainVerb(nounPhraseList)
-
   println(getMainVerbQuestionAnswer(dictEntryVerb,nounPhraseList))
+
+  // now check for another sentence
+
 }//end of object
