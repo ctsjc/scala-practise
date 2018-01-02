@@ -1,0 +1,240 @@
+American reconnaissance satellites have reportedly spotted Chinese ships suspected of selling oil to North Korean vessels about 30 times since October.
+
+South Korean officials told the Chosun Ilbo that the ships were allegedly trading in the West Sea between China and South Korea in a bid to bypass strict United Nations sanctions on oil exports to the pariah regime over its ongoing nuclear and weapons programme.
+
+“We need to focus on the fact that the illicit trade started after a UN Security Council resolution in September drastically capped North Korea’s imports of refined petroleum products,” an unnamed source told the paper.
+
+The US Treasury published surveillance photographs reportedly taken on October 19 of the North Korean vessel Rye Song Gang 1 lashed to a large Chinese vessel in deep waters, apparently showing hoses transferring oil.
+
+Under the current tough sanctions regime Pyongyang is only allowed 500,000 barrels of oil imports a year. North Korea last week denounced ever tightening economic sanctions as “an act of war.”
+
+Ship-to-ship trade with North Korea on the high seas is also forbidden under UN rules but very hard to patrol without an aggressive Chinese crackdown on smuggling.
+
+
+President Trump on Thursday suggested China, with whom he has attempted to form a close relationship, had been "caught red handed". In a tweet, he said: "Very disappointed that China is allowing oil to go into North Korea. There will never be a friendly solution to the North Korea problem if this continues to happen!"
+
+Robert Kelly, professor of political science at South Korea’s Pusan National University, ventured that the reports were entirely plausible. “There is a lot of under-the-radar on the Chinese side. Beijing does not police the border strictly or enforce the sanctions toughly. This could be that,” he said.
+
+Meanwhile analysts were surprised by the latest Chinese customs data released on Tuesday, showing that, in a rare move, Beijing exported no oil products to North Korea in November.
+
+
+Why North Korean fishermen are being washed ashore in Japan
+h
+Chinese foreign ministry spokeswoman Hua Chunying said she didn’t know any details about the oil products export situation, but added: “As a principle, China has consistently fully, correctly, conscientiously and strictly enforced relevant UN Security Council resolutions on North Korea.”
+
+It is unknown if China still sells crude oil to Pyongyang as Beijing has not disclosed its crude export data for several years.
+
+
+American reconnaissance satellites have reportedly spotted Chinese ships suspected of selling oil to North Korean vessels about 30 times since October.
+
+spotted
+	Who -> American reconnaissance satellites
+	What -> selling
+			What -> oil
+			Who is selling -> Chinese ships
+			Whom -> North Korean vessels
+	How many times ->30 times
+	Since -> October
+-------------------------------------------------------------------------------------
+South Korean officials told the Chosun Ilbo that the ships were allegedly trading in the West Sea between China and South Korea in a bid to bypass strict United Nations sanctions on oil exports to the pariah regime over its ongoing nuclear and weapons programme.
+
+Told
+	Who -> south korean official
+	Whom -> chosun llbo
+	What->
+		trading
+			Adverb -> allegedly
+			Who -> the ships
+			Whom->
+			Where -> in the West Sea between China and South Korea
+			Why in this location-> in a bid to bypass strict
+-------------------------------------------------------------------------------------
+
+“We need to focus on the fact that the illicit trade started after a UN Security Council resolution in September drastically capped North Korea’s imports of refined petroleum products,” an unnamed source told the paper.
+
+Told
+	Who => unnamed source
+	Whom=> paper
+	What =>
+		Need
+			Who-> we
+			What -> to focus
+					What -> fact
+							What fact-> started
+								What is started-> illicit trade
+								When is started (after)-> resolution
+											Which ->  UN Security Council
+											When -> September
+											Effect-> capped
+													Adverb=>drastically
+													Whose-> North Korea’
+													What -> imports
+															Of => refined petroleum products
+
+-------------------------------------------------------------------------------------
+The US Treasury published surveillance photographs reportedly taken on October 19 of the North Korean vessel Rye Song Gang 1 lashed to a large Chinese vessel in deep waters, apparently showing hoses transferring oil.
+
+The US published photographs taken of the North Korean vessel lashed to a Chinese vessel showing hoses transferring oil.
+
+Photograph
+	Of = North Korean Vessel
+		Lashed
+			With = Chinese Vessel
+
+	Showing = hoses
+				Transferring
+					Oil
+By verb
+
+Publish
+	Who = The US Treasury
+	What = Photograph
+			Photograph of = North Korean Vessel
+						Lashed
+							With = Chinese Vessel
+			What it doing in photograph = showing
+									What showing = hoses
+												Action = transferring oil
+-------------------------------------------------------------------------------------
+Under the current tough sanctions regime Pyongyang is only allowed 500,000 barrels of oil imports a year.
+North Korea last week denounced ever tightening economic sanctions as “an act of war.”
+
+sanctions
+	What is Allowed
+		Who is allowed= regime Pyongyang
+		What is allowed=  500,000 barrels of oil imports a year
+	How sever are the sanctions = current tough
+
+
+denounced
+	Who = NK
+	What = tightening
+			What = economic sanctions
+			As = an act of war
+
+Something is wrong--- revisit this sentence
+
+-------------------------------------------------------------------------------------
+Ship-to-ship trade with North Korea on the high seas is also forbidden under UN rules but very hard to patrol without an aggressive Chinese crackdown on smuggling.
+
+Fuck verb or noun == focus on the gist
+forbidden
+	What = trade
+			Mode = Ship to ship
+			With = NK
+			Where = On the high seas
+	By = UN rules
+
+
+patrol
+	Patrolling on  = smuggling
+	How is Patrolling ? = Hard
+					Without the help of = aggressive Chinese crackdown
+
+
+
+President Trump on Thursday suggested China, with whom he has attempted to form a close relationship, had been "caught red handed". In a tweet, he said: "Very disappointed that China is allowing oil to go into North Korea. There will never be a friendly solution to the North Korea problem if this continues to happen!"
+
+
+President Trump
+	Suggested
+		China
+			Attempted
+				To form a close relationship
+		Thursday
+		Caught red handed
+	Tweet
+		Very disappointed
+			China
+				Allowing
+					Oil
+					NK
+					If it continues =
+							Solution
+								Never be a
+								Friendly
+								To = NK Problem
+
+
+Robert Kelly, professor of political science at South Korea’s Pusan National University, ventured that the reports were entirely plausible. “There is a lot of under-the-radar on the Chinese side. Beijing does not police the border strictly or enforce the sanctions toughly. This could be that,” he said.
+
+Robert Kelly
+	Identity = professor
+			political science
+			South Korea’s Pusan National University
+	ventured
+		What = the reports
+				 entirely plausible
+
+	Said =
+
+
+ There is a lot of under-the-radar on the Chinese side. Beijing does not police the border strictly or enforce the sanctions toughly. This could be that,
+
+under-the-radar
+	How much = lot
+	Chinese side
+
+
+Beijing
+	Police
+		Border
+		Not strictly
+	Sanction
+		Enforcement
+			Not toughly
+
+
+Meanwhile analysts were surprised by the latest Chinese customs data released on Tuesday, showing that, in a rare move, Beijing exported no oil products to North Korea in November.
+
+Surprised
+	Analyst
+	Data
+		Released
+			By Chinese customs
+			On Tuesday
+		Showing
+			Beijing
+				Export
+					No
+					Oil product
+					NK
+					November
+	Rare move
+
+
+Chinese foreign ministry spokeswoman Hua Chunying said she didn’t know any details about the oil products export situation, but added: “As a principle, China has consistently fully, correctly, conscientiously and strictly enforced relevant UN Security Council resolutions on North Korea.”
+
+Chinese foreign ministry spokeswoman
+	Hua Chunying
+	Did not know
+		Export situation
+			Details of Oil products
+		Said
+			China
+				Enforced
+					Relevant
+					Resolutions
+						UN Security Council resolutions
+						On NK
+					consistently fully, correctly, conscientiously and strictly
+
+
+It is unknown if China still sells crude oil to Pyongyang as Beijing has not disclosed its crude export data for several years.
+
+Unknown
+	What = sells
+			China
+			Crude oil
+			Pyongyang
+	Why =  Beijing
+			Not disclosed
+				Export data
+					Crude
+					Several years
+
+
+
+
+
+In next step, I am going to identity the nouns/verbs with proper questioning.

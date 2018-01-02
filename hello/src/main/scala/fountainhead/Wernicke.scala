@@ -9,7 +9,9 @@ object Wernicke  extends  App {
   var phraseList = getPhraseList(text, 0)
   var nounPhraseList = getNounPhraseList(phraseList)
   var dictEntryVerb = dictionaryEntryOfMainVerb(nounPhraseList)
-  println(getMainVerbQuestionAnswer(dictEntryVerb,nounPhraseList))
+  var mvq=getMainVerbQuestionAnswer(dictEntryVerb,nounPhraseList)
+  println(mvq.w)
+  mvq.q.foreach{case (key, value) => println (key + "-->" + value)}
 
   // now check for another sentence
 
