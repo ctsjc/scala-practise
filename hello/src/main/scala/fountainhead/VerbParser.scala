@@ -51,7 +51,7 @@ object VerbParser {
     // example [ 'would like to see' can be form from 4 different single words [ would ,like, to, see ]
     var dictEntry = DEntry(null,null,null,null,null)
     var dictStructure = DStructure(null,null,null)
-    var dummyVerbsFromInputList=verbsFromInputList;
+    var dummyVerbsFromInputList=verbsFromInputList
     // iterating over entire word list
     for (m <- dummyVerbsFromInputList.indices) {
       // skipping the first word and creating another list
@@ -103,7 +103,7 @@ object VerbParser {
         // grab old list
         leftRight = leftRight :+ left
         // add the current element
-        left=List()ø
+        left=List()
         left = left :+nounPhraseList(index)
         leftRight = leftRight :+ left
         // reset the list
