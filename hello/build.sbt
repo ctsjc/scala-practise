@@ -20,3 +20,7 @@ libraryDependencies += "org.json4s" % "json4s-native_2.12" % "3.6.0-M1"
 // https://mvnrepository.com/artifact/org.specs2/specs2
 libraryDependencies += "org.specs2" % "specs2_2.10" % "1.12.3" % "test"
 libraryDependencies += "org.mongodb" %% "casbah" % "3.1.1"
+
+// https://mvnrepository.com/artifact/edu.stanford.nlp/stanford-corenlp
+libraryDependencies += "edu.stanford.nlp" % "stanford-corenlp" % "3.8.0"
+libraryDependencies += "edu.stanford.nlp" % "stanford-corenlp" % "3.8.0" classifier "models"

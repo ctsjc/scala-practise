@@ -103,7 +103,7 @@ object Parser{
   // Generic list to combination, and check into function, returns matching
   private def commander[A,B](parentList:List[B],
                         expectedList:List[A],
-                        fun:(List[B]) => Option[A]
+                        f:(List[B]) => Option[A]
                        ) : List[A]= {
     // creating combinations of phrases
     // example [ 'would like to see' can be form from 4 different single words [ would ,like, to, see ]
@@ -120,8 +120,8 @@ object Parser{
         // check the newly formed word into the dictionary for its existence,
         // if it is present then add to the list
         // splittedList._1.map(_._1) = first part, first word in a list
-        if (fun(splittedList._1).isDefined) {
-          dummyExpList = dummyExpList :+ fun(splittedList._1).get
+        if (f(splittedList._1).isDefined) {
+          dummyExpList = dummyExpList :+ f(splittedList._1).get
         }
       } //end of for
     } //end of for
