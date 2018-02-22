@@ -17,7 +17,7 @@ object VerbParser {
   def populate(): List[DEntry] ={
     implicit val jsonDefaultFormats = DefaultFormats
     var json_dictionary:List[DEntry]=List()
-    val source = scala.io.Source.fromFile("res/dverb.json")
+    val source = scala.io.Source.fromFile("/home/cts1/Repo/spearhead/hello/res/dverb.json")//
     val lines = source.getLines()
     for (line <- lines) {
       json_dictionary = parse(line).extract[List[DEntry]]
