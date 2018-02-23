@@ -1,1 +1,74 @@
-dd
+I am going to school
+Reena going to school by bus
+Cultural festival is organized in school
+School name is Sharda Sadan
+Tom hate school
+my school contensted in olympic games
+school has swimming pool
+I was absent from school because of illness.
+my school address is PQR, PY-2112
+--------------------------------------------
+School
+	action
+		Go
+			where		school
+			Who is going	I, Reena
+			How is going	Bus
+		Organized
+			where	school
+			what	Cultural Festival
+		hate
+			hate what	school
+			who		tom
+		contested
+			who 		school
+			where		olympic games
+		absent
+			absent from	school
+			who is absent	I
+			reason		illness
+	properties
+		name	sharda sadan
+		address	PQR, PY-2112
+
+	possession
+		what	swimming pool
+--------------------------------------------
+school
+	properties
+		address	PQR, PY-2112
+
+absent
+who is absent	I
+absent from	school
+reason 		illness
+
+
+contested
+who	my school
+where	olympic games
+
+hate
+who	tom
+what	school
+
+Going
+who	I
+where	school
+
+Going
+who	Reena
+where	school
+How	By bus	Mode of Transport
+
+Organized
+	where 	school
+	what	Cultural Festival
+
+School
+	name	sharda
+
+Step 1
+	Parse the sentence as par requirement { noun or verb } based
+Step 2
+	Collect them to the mother School Table
