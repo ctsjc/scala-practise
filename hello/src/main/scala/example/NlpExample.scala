@@ -1,7 +1,7 @@
 package example
 
-import java.util.Dictionary
-
+import edu.stanford.nlp.ling.CoreAnnotations
+import edu.stanford.nlp.ling.CoreAnnotations.TextAnnotation
 import edu.stanford.nlp.simple.Sentence
 
 import scala.collection.JavaConverters._
@@ -15,49 +15,71 @@ object NlpExample extends App {
       "transferring oil products to North Korea " +
       "in violation of " +
       "international sanctions."
-    val sent:Sentence =new Sentence(text)
 
+    val sent=toSentence(text)
+    val mainVerb=getMainVerb(sent)
 
-    //val dg=sent.dependencyGraph()
-    // println(dg.getRoots)
-    //dg.prettyPrint()
-    val dict_sequence="Ψ1 have seized Ψ2 suspected of Ψ3 in violation of Ψ4"
+    val dict_sequence=getSequence(mainVerb,sent.text())
+    val splittedSeq=splitSequence(dict_sequence)
+    val map=getMap(splittedSeq,sent)
+    for((k,v) <- map) println(s"$k - $v")
 
-
-    val parsed_dict_seq=dict_sequence.split("Ψ[0-9]+[ ]?").filter(!_.isEmpty).map(_.trim)
-    var map:Map[Int,String] =Map()
-
-    var k:Int=0
-    val t=parsed_dict_seq.map( _.split(" "))
-    var start:Int=0
-    var end:Int=0
-    var mapIndex=1
-    if(parsed_dict_seq.forall(text.contains(_))){
-        // that word and exact that word.... then divide the list
-        t.foreach(d => {
-            var index=0
-            // possible introduction of bug. we have to find the consecutive, so deciding the initial value of k is bit tricky
-            var l:List[Int]=Nil
-            while(index < d.length ){
-                k=sent.words.asScala.indexOf(d(index),k)
-                l=l:+k
-                index=1+index
-            }
-
-            // now list should have only consecutive elements
-            // TODO
-            // now slice the sentence and put them into the map
-            end=l(0)
-            var seq= sent.words.asScala.slice(start,end)
-            //map = map+(mapIndex -> seq.mkString(" "),mapIndex+1->d.mkString(" ") )
-            //mapIndex+=2
-            map = map+(mapIndex -> seq.mkString(" "))
-            mapIndex+=1
-            start=l.last+1
-        })
-        map = map+(mapIndex -> sent.words.asScala.drop(start).mkString(" "))
-        for((k,v) <- map) println(s"$k - $v")
+    def toSentence(text:String):Sentence={
+        new Sentence(text)
     }
+
+
+
+    def getMainVerb(sentence: Sentence):String ={
+        println(sentence.text())
+        var x:CoreAnnotations.TextAnnotation=new CoreAnnotations.TextAnnotation()
+        var y =sentence.dependencyGraph().getFirstRoot.getString(x.getClass)
+        println(">><<>>"+y)
+        y
+
+    }
+
+    def getSequence(verb:String, text:String):String ={
+
+        // It will check the matching sequence in the dictionary
+        // get sequences for verb
+        // check which fits perfect
+        // return that one to back
+        val dict_sequence:String="Ψ1 have seized Ψ2 suspected of Ψ3 in violation of Ψ4"
+        dict_sequence
+    }
+
+    def splitSequence(dict_sequence:String):List[Array[String]]={
+        val parsed_dict_seq=dict_sequence.split("Ψ[0-9]+[ ]?").filter(!_.isEmpty).map(_.trim).toList
+        var splittedSequence= parsed_dict_seq.map( _.split(" "))
+        splittedSequence
+    }
+
+    def getMap(splittedSeq:List[Array[String]], sent:Sentence):Map[Int,String]={
+        var map:Map[Int,String] =Map()
+        var tracker:Int=0
+        var start:Int=0
+        var end:Int=0
+        var mapIndex=1
+        if(splittedSeq.flatten.forall(sent.text().contains(_))){
+            splittedSeq.foreach(d => {
+                var index=0
+                var l:List[Int]=Nil
+                while(index < d.length ){
+                    tracker=sent.words.asScala.indexOf(d(index),tracker)
+                    l=l:+tracker
+                    index=1+index
+                }
+                end=l(0)
+                map = map+(mapIndex -> sent.words.asScala.slice(start,end).mkString(" "))
+                start=l.last+1
+                mapIndex+=1
+            })
+            map = map+(mapIndex -> sent.words.asScala.drop(start).mkString(" "))
+        }
+        map
+    }
+
     println("----")
 
     /*val pos=sent.posTags()
@@ -77,4 +99,10 @@ You need more improvement on client deliverables.
 Please be sure that your code deliverables should be zero/minimal defects and good in quality.
 Please improve proactive communication skill as well.
 
+
+Refactor
+Add NLP parser
+Add one test for it
+
+Start about Spark code
 **/

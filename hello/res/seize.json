@@ -1,0 +1,18 @@
+{
+  "raw": {
+    "typex":"take",
+    "explore":"x take y."
+  },
+  "meaning":"take hold of suddenly and forcibly",
+  "sequence":["Ψ1 have seized Ψ2 suspected of Ψ3 in violation of Ψ4","Ψ1 have seized Ψ2","Ψ1 have seized Ψ2 suspected of Ψ3"],
+  "questions":{
+    "who seized":"Ψ1",
+    "what is seized": "Ψ2",
+    "why it is seized": "Ψ3",
+    "under which law it is seized": "Ψ4",
+    "where is seized":"ΨX",
+    "how it is seized":"ΨX"
+  }
+}
+//https://github.com/milessabin/shapeless
+// to parse use this shapeless... it looks promising and interesting to contribute....
