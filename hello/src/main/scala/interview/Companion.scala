@@ -9,41 +9,32 @@ class Employee1(val empId : Int, val empName:String){
 }
 
 object Companion extends App{
-  var l1:List[Int]=List(1,2,3)
-  var l2:List[Int]=List(4,5,6)
-  var x= for(i<-l1;j<-l2) yield {i+j}
-  println(s"--- $x ")
-  val emp1=new Employee1()
-  println(">>>>>"+emp1)
-  /*Main.sayHello()
+
+  Main.sayHello()
   val c:Main= Main()
-  c.sayHelloWorld()
-
-  // pattern matching
-  var x =1
-  x match {
-    case 1 => "one"
-    case 2 => "two"
-    case _=> "number"
-  }
-
-  case class Person(name:String, age:Int)
-
-  val p = Person("j",12)
-  val x1= p match {
-    case Person("j1",_)=>"name found"
-    case Person(_,112)=>"age found"
-    case _=>"nothing found"
-  }
-  println("-----> "+x1)*/
+//
+//
+//  // pattern matching
+//  var x =1
+//  x match {
+//    case 1 => "one"
+//    case 2 => "two"
+//    case _=> "number"
+//  }
+//
+//  case class Person(name:String, age:Int)
+//
+//  val p = Person("j",12)
+//  val x1= p match {
+//    case Person("j1",_)=>"name found"
+//    case Person(_,112)=>"age found"
+//    case _=>"nothing found"
+//  }
+//  println("-----> "+x1)
 }
 class Main() {
-
-
   def sayHelloWorld(s:Null) {
-
     println("Hello World");
-
   }
 
   private def myPrivateMethod(): Unit ={
@@ -51,25 +42,17 @@ class Main() {
   }
 }
 
-
-
 object Main {
-
   val mClass:Main=new Main
+
   def sayHello() {
-    mClass.sayHelloWorld(null)
-    mClass.myPrivateMethod()  // <--- able to access the private, which is not possible from non companion object
+    //mClass.myPrivateMethod()  // <--- able to access the private, which is not possible from non companion object
     println("sayHello!")
-
   }
-
-
-
   def apply(): Main ={
-    println("Object apply")
+    println("apply!")
     new Main()
   }
-
 }
 
 trait Equal{

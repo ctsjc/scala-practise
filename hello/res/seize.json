@@ -4,7 +4,9 @@
     "explore":"x take y."
   },
   "meaning":"take hold of suddenly and forcibly",
-  "sequence":["Ψ1 have seized Ψ2 suspected of Ψ3 in violation of Ψ4","Ψ1 have seized Ψ2","Ψ1 have seized Ψ2 suspected of Ψ3"],
+  "sequences":["Ψ1 have seized Ψ2 suspected of Ψ3 in violation of Ψ4",
+    "Ψ1 have seized Ψ2",
+    "Ψ1 have seized Ψ2 suspected of Ψ3"],
   "questions":{
     "who seized":"Ψ1",
     "what is seized": "Ψ2",

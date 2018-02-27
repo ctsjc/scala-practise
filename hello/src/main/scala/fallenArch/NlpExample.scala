@@ -1,4 +1,4 @@
-package example
+package fallenArch
 
 import edu.stanford.nlp.ling.CoreAnnotations
 import edu.stanford.nlp.simple.Sentence
@@ -35,7 +35,6 @@ object NlpExample extends App {
         var y =sentence.dependencyGraph().getFirstRoot.getString(x.getClass)
         println(">><<>>"+y)
         y
-
     }
 
     def getSequence(verb:String, text:String):String ={
@@ -44,6 +43,8 @@ object NlpExample extends App {
         // get sequences for verb
         // check which fits perfect
         // return that one to back
+        // Read the sequences from dictionary and select which matches most...
+
         val dict_sequence:String="Ψ1 have seized Ψ2 suspected of Ψ3 in violation of Ψ4"
         dict_sequence
     }
