@@ -9,31 +9,51 @@ object forfun extends App{
     "transferring oil products to North Korea " +
     "in violation of " +
     "international sanctions."
-  // (splittedSeq.flatten.forall(sent.text().contains(_))){
+
   val dict_sequence:String="have seized-suspected of-in violation of-"
-  //val dict_sequence:String="suspected of-in violation of-have seized-"
 
-  println(text)
-  val lst:List[String]=text.split(" ").toList
+  val inputText:List[String]=text.split(" ").toList
   val parsed_dict_seq=dict_sequence.split("-").filter(!_.isEmpty).map(_.trim).toList
-  println(forJack( parsed_dict_seq,lst))
 
-  // now Add the location number of found
+  val max=getSequence(text,"seized")
+  println(max)
 
-  def forJack[String](lst2:List[String],lst:List[String]): Int = {
-    var lastFound,curFound:Int=0
-    var totalFound:Int=0
-    for (d<-lst2;e<- lst.sliding( d.toString.split(" ").size)) {
-        if( d == e.mkString(" ")) {
-          curFound=lst.indexOfSlice(e)
-          if(curFound < lastFound)
-            return (totalFound/lst2.size)*100
-          totalFound +=1
-          println("Match.... " + d+"\t"+curFound)
 
-          lastFound=curFound
-        }
+  def getSequence(sentence:String,word:String):String={
+    val sequences=List("have seized-suspected of-in violation of-",
+      "seized",
+      "have seized-suspected of",
+      "seized-because of")
+
+    sequences.map(seq => {
+      percentageMatch(text, seq)
+    }).reduceLeft((x,y)=>{
+      if(x._1 > y._1)
+        x
+      else if(x._1 == y._1 && x._2 > y._2)
+        x
+      else
+        y
+    })._3
+  }
+  def percentageMatch(sentence:String, dictionarySequence:String): (Int,Int,String) = {
+
+    val l:List[String]= sentence.split(" ").toList
+    val m:List[String] = dictionarySequence.split("-").filter(!_.isEmpty).map(_.trim).toList
+
+    var lastFound : Int = 0
+    var curFound : Int = 0
+    var totalFound : Int = 0
+
+    for (d<-m;e<- l.sliding( d.split(" ").size)) {
+      if( d == e.mkString(" ")) {
+        curFound=l.indexOfSlice(e)
+        if(curFound < lastFound)
+          return ((totalFound/d.size)*100,m.size,dictionarySequence)
+        totalFound +=1
+        lastFound=curFound
+      }
     }
-    (totalFound/lst2.size)*100
+    ((totalFound/m.size)*100,m.size,dictionarySequence)
   }
 }

@@ -2,6 +2,7 @@ package fallenArch
 
 import edu.stanford.nlp.ling.CoreAnnotations
 import edu.stanford.nlp.simple.Sentence
+import fallenArch.forfun.text
 
 import scala.collection.JavaConverters._
 
@@ -23,6 +24,7 @@ object NlpExample extends App {
     val map=getMap(splittedSeq,sent)
     for((k,v) <- map) println(s"$k - $v")
 
+    println(" Done ")
     def toSentence(text:String):Sentence={
         new Sentence(text)
     }
@@ -44,8 +46,50 @@ object NlpExample extends App {
         // check which fits perfect
         // return that one to back
         // Read the sequences from dictionary and select which matches most...
+        def getSequence(verb:String,sentence:String):String={
+            // Convert it to read from json
+            val sequences=List("have seized-suspected of-in violation of-",
+                "seized",
+                "have seized-suspected of",
+                "seized-because of")
 
-        val dict_sequence:String="Ψ1 have seized Ψ2 suspected of Ψ3 in violation of Ψ4"
+            sequences.map(seq => {
+                percentageMatch(sentence, seq)
+            }).reduceLeft((x,y)=>{
+                if(x._1 > y._1)
+                    x
+                else if(x._1 == y._1 && x._2 > y._2)
+                    x
+                else
+                    y
+            })._3
+        }
+
+        def percentageMatch(sentence:String, dictionarySequence:String): (Int,Int,String) = {
+
+            val l:List[String]= sentence.split(" ").toList
+            val m:List[String] = dictionarySequence.split("-").filter(!_.isEmpty).map(_.trim).toList
+
+            var lastFound : Int = 0
+            var curFound : Int = 0
+            var totalFound : Int = 0
+
+            for (d<-m;e<- l.sliding( d.split(" ").size)) {
+                if( d == e.mkString(" ")) {
+                    curFound=l.indexOfSlice(e)
+                    if(curFound < lastFound)
+                        return ((totalFound/d.size)*100,m.size,dictionarySequence)
+                    totalFound +=1
+                    lastFound=curFound
+                }
+            }
+            ((totalFound/m.size)*100,m.size,dictionarySequence)
+        }
+
+        var dict_sequence:String= getSequence(verb,text) //"Ψ1 have seized Ψ2 suspected of Ψ3 in violation of Ψ4"
+        println(dict_sequence)
+        // So there will be map seq-> ΨSeq
+        dict_sequence="Ψ1 have seized Ψ2 suspected of Ψ3 in violation of Ψ4"
         dict_sequence
     }
 

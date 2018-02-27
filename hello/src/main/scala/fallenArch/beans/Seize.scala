@@ -1,4 +1,6 @@
-{
+package fallenArch.beans
+
+/*{
   "raw": {
     "typex":"take",
     "explore":"x take y."
@@ -15,6 +17,12 @@
     "where is seized":"ΨX",
     "how it is seized":"ΨX"
   }
+}*/
+case class Seize(raw:Raw,meaning:String,sequence:SequenceX,questions:QuestionsX ) {
+
 }
-//https://github.com/milessabin/shapeless
-// to parse use this shapeless... it looks promising and interesting to contribute....
+case class Raw(typex:String, explore:String)
+
+case class SequenceX(seq:String,pha:String)
+
+case class QuestionsX()
