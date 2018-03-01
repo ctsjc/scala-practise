@@ -18,11 +18,12 @@ package fallenArch.beans
     "how it is seized":"ΨX"
   }
 }*/
-case class Seize(raw:Raw,meaning:String,sequence:SequenceX,questions:QuestionsX ) {
-
-}
+case class Entry(word:String,
+                 raw:Raw,
+                 meaning:String,
+                 sequence:SequenceX,
+                 questions:QuestionsX )
 case class Raw(typex:String, explore:String)
+case class SequenceX(pairs: List[(String,String)] )
+case class QuestionsX(quest:Map[String,String])
 
-case class SequenceX(seq:String,pha:String)
-
-case class QuestionsX()
