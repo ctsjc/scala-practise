@@ -1,6 +1,7 @@
 import Dependencies._
 import sbt.Keys.libraryDependencies
 
+scalaVersion := "2.12.2"
 lazy val root = (project in file(".")).
   settings(
     inThisBuild(List(
@@ -24,3 +25,6 @@ libraryDependencies += "org.mongodb" %% "casbah" % "3.1.1"
 // https://mvnrepository.com/artifact/edu.stanford.nlp/stanford-corenlp
 libraryDependencies += "edu.stanford.nlp" % "stanford-corenlp" % "3.8.0"
 libraryDependencies += "edu.stanford.nlp" % "stanford-corenlp" % "3.8.0" classifier "models"
+
+libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.3"
+libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.8.0"
