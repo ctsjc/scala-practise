@@ -8,6 +8,7 @@ class DictLoader{
     SequenceX( List(
       ("have seized-suspected of-in violation of-","Ψ1 have seized Ψ2 suspected of Ψ3 in violation of Ψ4"),
       ("have seized","Ψ1 have seized Ψ5"),
+      ("seized-suspected of-at-in breach of","Ψ1 seized Ψ2 suspected of Ψ3 at Ψ5 in breach of Ψ4"),
       ("was seized at ","Ψ2 was seized at Ψ5"),
       ("have seized-suspected of","Ψ1 have seized Ψ2 suspected of Ψ3"))),
     QuestionsX(Map("who seized"->"Ψ1",
@@ -16,7 +17,7 @@ class DictLoader{
       "under which law it is seized"-> "Ψ4",
       "where is seized"->"Ψ5",
       "how it is seized"->"Ψ6")))
-//The Panama-flagged tanker, which is named Koti, is being held at a port near the western city of Pyeongtaek.
+
   private val held=Entry("held",
     Raw("",""),
     "",
@@ -28,8 +29,21 @@ class DictLoader{
       "where it is being held"-> "Ψ2",
       ))
   )
-
-  val dictionary:Map[String,Entry]=Map(seized.word ->seized, held.word->held)
+  //South Korean authorities impounded a second ship suspected of transferring oil to North Korea in violation of U.N. sanctions
+  private val impounded=Entry("impounded",
+    Raw("",""),
+    "",
+    SequenceX( List(
+      ("impounded-suspected of-in violation","Ψ1 impounded Ψ2 suspected of Ψ3 in violation Ψ4")
+    )),
+    QuestionsX(
+      Map("who"->"Ψ1",
+        "what"-> "Ψ2",
+        "why"-> "Ψ3",
+        "under which law"-> "Ψ4"
+      ))
+  )
+  val dictionary:Map[String,Entry]=Map(seized.word ->seized, held.word->held, impounded.word->impounded)
 }
 
 /*

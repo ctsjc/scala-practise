@@ -6,11 +6,14 @@
     </appender>
 
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <!-- path to your log file, where you want to store logs -->
+        <!-- path to your log file, where you want to store logs
+         %d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+         -->
+
         <file>/tmp/spearhead.log</file>
         <append>false</append>
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <pattern>%d{ss.SSS} %-5level %logger{36}-%M- %msg%n</pattern>
         </encoder>
     </appender>
 

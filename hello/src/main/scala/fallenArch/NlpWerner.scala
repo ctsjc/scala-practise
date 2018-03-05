@@ -22,8 +22,14 @@ class NlpWerner {
       mv = getMainVerb(sent)
     }
     val dict_entry: Entry = createEntry(mv)
+    logger.info("entry {}",dict_entry)
+
     val dict_sequence: Entry = createSequenceEntry(dict_entry, sent.text())
+    logger.info("sequence {} ",dict_sequence)
+
     val entryX = createQuestionEntry(dict_sequence, sent)
+    logger.info("q-entry {}",entryX)
+
     entryX
   }
 
@@ -62,6 +68,8 @@ class NlpWerner {
         else
           y
       })._3
+      logger.info(s"max_matching_sequence :: $max_matching_sequence")
+
       //println(">>>"+resp+""+dl.dictionary(verb).sequence.pairs.find(_._1==resp))
       val newEntry = entry.copy(sequence = SequenceX(List(entry.sequence.pairs.find(_._1 == max_matching_sequence).get)))
       newEntry
@@ -111,7 +119,7 @@ class NlpWerner {
         //println("__+++"+sentence.words.asScala.indexOfSlice(d.mkString(" ")))
         for(sublist <- sentence.words.asScala.sliding(d.length) ){
           if(d.mkString(" ") == sublist.mkString(" ")) {
-           // println("slice - sublist : "+sublist+"\tindex :: "+sentence.words.asScala.indexOfSlice(sublist)+"\tsublist :::"+sentence.words.asScala.slice(lastRunner, sentence.words.asScala.indexOfSlice(sublist)).mkString(" "))
+            //println("slice - sublist : "+sublist+"\tindex :: "+sentence.words.asScala.indexOfSlice(sublist)+"\tsublist :::"+sentence.words.asScala.slice(lastRunner, sentence.words.asScala.indexOfSlice(sublist)).mkString(" "))
             map = map + (mapIndex -> sentence.words.asScala.slice(lastRunner, sentence.words.asScala.indexOfSlice(sublist)).mkString(" "))
             mapIndex+=1
             lastRunner=sentence.words.asScala.indexOfSlice(sublist)+d.length
@@ -157,17 +165,21 @@ class NlpWerner {
   }
 
   def splitSeqByΨ(dict_sequence:String):Map[Int, Int]={
-    logger.info("the split by Ψ : "+dict_sequence)
+    logger.info("the split by Ψ : "+dict_sequence)//Ψ1-seized-Ψ2-suspected of-Ψ3-at-Ψ5-in breach of-Ψ4
 
     var i:Int=0
     var mq: Map[Int, Int] = Map()
 
     dict_sequence.split(" ").foreach( x=>{
+      //println(x)
       if(x.startsWith("Ψ")){
         i+=1
         mq+=(x.charAt(1).toString.toInt -> i)
       }
     })
+    logger.info("splitSeqByΨ")
+    mq.foreach(e=>logger.info(e._1+"->"+e._2))
+
     mq
   }
 
