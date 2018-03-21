@@ -28,4 +28,3 @@ libraryDependencies += "edu.stanford.nlp" % "stanford-corenlp" % "3.8.0" classif
 
 libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.3"
 libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.8.0"
-libraryDependencies += "com.chuusai" %% "shapeless" % "2.3.3"
