@@ -1,5 +1,6 @@
 package fallenArch
 
+import fallenArch.beans.Entry
 import org.scalatest.{BeforeAndAfter, FlatSpec, Matchers}
 
 
@@ -10,6 +11,22 @@ class NlpWernerTest extends FlatSpec with Matchers with BeforeAndAfter {
     nlpWerner = new NlpWerner
   }
 
+  ignore should "run" in{
+    val passage=List("South Korean authorities have seized a second vessel suspected of transferring oil products to North Korea in violation of international sanctions.",
+      "The Panama-flagged tanker, KOTI, was seized at Pyeongtaek-Dangjin port, on the west coast.",
+      "The Panama-flagged tanker which is named Koti is being held at a port near the western city of Pyeongtaek.",
+      "South Korea last month reportedly seized a Panama-flagged oil tanker suspected of transferring oil products to North Korea at sea in breach of U.N. sanctions.",
+      "South Korean authorities impounded a second ship suspected of transferring oil to North Korea in violation of U.N. sanctions."
+    )
+
+    var map:Map[Int,Entry]=Map()
+
+    for(index <- passage.indices){
+      var entryX=nlpWerner.getEntry(passage(index),"")
+      map+=(index->entryX)
+    }
+    map.foreach(e=>println(e._1+"->"+e._2))
+  }
   //ignore
   "ignore"  should "sentence 1" in {
     val text = "South Korean authorities have seized a second vessel suspected of transferring oil products to North Korea in violation of international sanctions."
@@ -18,8 +35,8 @@ class NlpWernerTest extends FlatSpec with Matchers with BeforeAndAfter {
     println()
 
     for((x,y)<- entryX.questions.quest) println(x+"\t->"+y)
-     entryX.questions.quest("under which law it is seized") shouldEqual  "international sanctions ."
-   }
+    entryX.questions.quest("under which law it is seized") shouldEqual  "international sanctions ."
+  }
 
   "ignore1"  should "sentence 2" in {
     val text = "The Panama-flagged tanker, KOTI, was seized at Pyeongtaek-Dangjin port, on the west coast."
@@ -53,18 +70,16 @@ class NlpWernerTest extends FlatSpec with Matchers with BeforeAndAfter {
     entryX.questions.quest("where is seized") shouldEqual  "sea"
     entryX.questions.quest("what is seized") shouldEqual  "a Panama-flagged oil tanker"
 
-   }
+  }
 
   "The Hello  object" should "sentence 5" in {
     val text = "South Korean authorities impounded a second ship suspected of transferring oil to North Korea in violation of U.N. sanctions"
     var entryX=nlpWerner.getEntry(text,"impounded")
     println()
-
     for((x,y)<- entryX.questions.quest) println(x+"\t->"+y)
-
     entryX.questions.quest("what") shouldEqual  "a second ship"
-      entryX.questions.quest("why") shouldEqual  "transferring oil to North Korea"
-      entryX.questions.quest("under which law") shouldEqual  "of U.N. sanctions"
+    entryX.questions.quest("why") shouldEqual  "transferring oil to North Korea"
+    entryX.questions.quest("under which law") shouldEqual  "of U.N. sanctions"
   }
 
 }

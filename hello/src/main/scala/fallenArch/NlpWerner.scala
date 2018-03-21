@@ -15,12 +15,12 @@ class NlpWerner {
 
 
   def getEntry(text: String, mainVerb: String): Entry = {
-    logger.info("check the loggins is working or not...")
     val sent = toSentence(text)
     var mv = mainVerb
     if (mv.isEmpty) {
       mv = getMainVerb(sent)
     }
+
     val dict_entry: Entry = createEntry(mv)
     logger.info("entry {}",dict_entry)
 
@@ -46,7 +46,7 @@ class NlpWerner {
     y
   }
 
-  /* find the Entry class from dictionary */
+  /** find the matching Entry class from dictionary */
   def createEntry(mainVerb: String): Entry = {
     dl.dictionary(mainVerb)
   }
@@ -55,10 +55,10 @@ class NlpWerner {
     **/
   def createSequenceEntry(entry: Entry, text: String): Entry = {
     def getSequence(entry: Entry, sentence: String): Entry = {
-      val sequences = entry.sequence.pairs.map(_._1)
+      val tridentSequences = entry.sequence.pairs.map( _._2 ) // TridentValue
 
-      val max_matching_sequence = sequences.map(seq => {
-        percentageMatch(sentence, seq)
+      val max_matching_sequence = tridentSequences.map(i => {
+        percentageMatch(sentence, i)
       }).reduceLeft((x, y) => {
         logger.info(s"$x - $y")
         if (x._1 > y._1)
@@ -115,49 +115,26 @@ class NlpWerner {
     var lastRunner=0
     if (splittedSeq.flatten.forall(sentence.text().contains(_))) {
       splittedSeq.foreach(d => {
-        // d = is being held at
-        //println("__+++"+sentence.words.asScala.indexOfSlice(d.mkString(" ")))
         for(sublist <- sentence.words.asScala.sliding(d.length) ){
           if(d.mkString(" ") == sublist.mkString(" ")) {
-            //println("slice - sublist : "+sublist+"\tindex :: "+sentence.words.asScala.indexOfSlice(sublist)+"\tsublist :::"+sentence.words.asScala.slice(lastRunner, sentence.words.asScala.indexOfSlice(sublist)).mkString(" "))
             map = map + (mapIndex -> sentence.words.asScala.slice(lastRunner, sentence.words.asScala.indexOfSlice(sublist)).mkString(" "))
             mapIndex+=1
             lastRunner=sentence.words.asScala.indexOfSlice(sublist)+d.length
           }
         }
-        //println("\tsublist :::"+sentence.words.asScala.slice(lastRunner,sentence.words().size()))
         map = map + (mapIndex -> sentence.words.asScala.slice(lastRunner,sentence.words().size()).mkString(" "))
 
-        //------
-        //sentence.words.asScala.foreach(println(_))
-        /*var index = 0
-        var l: List[Int] = Nil
-        while (index < d.length) {
-          //The Panama-flagged tanker which is named Koti is being held at a port near the western city of Pyeongtaek.
-          tracker = sentence.words.asScala.indexOf(d(index), tracker)
-          l = l :+ tracker
-          index = 1 + index
-        }*/
-        /*end = l.head
-        map = map + (mapIndex -> sentence.words.asScala.slice(start, end).mkString(" "))
-        start = l.last + 1
-        mapIndex += 1*/
       })
-   //   map = map + (mapIndex -> sentence.words.asScala.drop(start).mkString(" "))
-   //   map = map + (mapIndex -> sentence.words.asScala.slice(lastRunner,sentence.words().size()).mkString(" "))
-
-      //-------
     }
     var mq: Map[String, String] = Map()
     map.foreach(e=>logger.info(e._1+"-"+e._2))
-    var bridgeMap=splitSeqByΨ(entry.sequence.pairs.head._2)
+    val bridgeMap=splitSeqByΨ(entry.sequence.pairs.head._2)
     entry.questions.quest.foreach((e) => {
-      var kk=e._2.charAt(1).toString.toInt
-      if(bridgeMap.contains(kk)){
-        if (map.contains(bridgeMap(kk)))
-          mq += (e._1 -> map(bridgeMap(kk)))
+      val k=e._2.charAt(1).toString.toInt
+      if(bridgeMap.contains(k)){
+        if (map.contains(bridgeMap(k)))
+          mq += (e._1 -> map(bridgeMap(k)))
       }
-
     })
     //mq.foreach(e => println(e._1 + "-" + e._2))
     val newEntry = entry.copy(questions = QuestionsX(mq))
@@ -179,16 +156,8 @@ class NlpWerner {
     })
     logger.info("splitSeqByΨ")
     mq.foreach(e=>logger.info(e._1+"->"+e._2))
-
     mq
   }
-
-
-
-  /*val pos=sent.posTags()
-  pos.forEach(println(_))
-*/
-  //Now we will find the main verb, or sequence
 }
 
 /*
