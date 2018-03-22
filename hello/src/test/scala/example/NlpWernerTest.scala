@@ -21,7 +21,16 @@ class NlpWernerTest extends FlatSpec with Matchers with BeforeAndAfter {
      entryX.questions.quest("under which law it is seized") shouldEqual  "international sanctions ."
    }
 
-  "ignore1"  should "sentence 2" in {
+  "ignore"  should "sentence 1a" in {
+    val text = "transferring oil products to North Korea"
+    var entryX=nlpWerner.getEntry(text,"transferring")
+    //println(entryX.questions.quest)
+    println()
+
+    for((x,y)<- entryX.questions.quest) println(x+"\t->"+y)
+   // entryX.questions.quest("under which law it is seized") shouldEqual  "international sanctions ."
+  }
+  /*"ignore1"  should "sentence 2" in {
     val text = "The Panama-flagged tanker, KOTI, was seized at Pyeongtaek-Dangjin port, on the west coast."
     var entryX=nlpWerner.getEntry(text,"seized")
     println()
@@ -65,6 +74,6 @@ class NlpWernerTest extends FlatSpec with Matchers with BeforeAndAfter {
     entryX.questions.quest("what") shouldEqual  "a second ship"
       entryX.questions.quest("why") shouldEqual  "transferring oil to North Korea"
       entryX.questions.quest("under which law") shouldEqual  "of U.N. sanctions"
-  }
+  }*/
 
 }

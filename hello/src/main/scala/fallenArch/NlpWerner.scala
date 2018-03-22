@@ -127,21 +127,6 @@ class NlpWerner {
         }
         //println("\tsublist :::"+sentence.words.asScala.slice(lastRunner,sentence.words().size()))
         map = map + (mapIndex -> sentence.words.asScala.slice(lastRunner,sentence.words().size()).mkString(" "))
-
-        //------
-        //sentence.words.asScala.foreach(println(_))
-        /*var index = 0
-        var l: List[Int] = Nil
-        while (index < d.length) {
-          //The Panama-flagged tanker which is named Koti is being held at a port near the western city of Pyeongtaek.
-          tracker = sentence.words.asScala.indexOf(d(index), tracker)
-          l = l :+ tracker
-          index = 1 + index
-        }*/
-        /*end = l.head
-        map = map + (mapIndex -> sentence.words.asScala.slice(start, end).mkString(" "))
-        start = l.last + 1
-        mapIndex += 1*/
       })
    //   map = map + (mapIndex -> sentence.words.asScala.drop(start).mkString(" "))
    //   map = map + (mapIndex -> sentence.words.asScala.slice(lastRunner,sentence.words().size()).mkString(" "))

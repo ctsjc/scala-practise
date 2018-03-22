@@ -43,7 +43,22 @@ class DictLoader{
         "under which law"-> "Ψ4"
       ))
   )
-  val dictionary:Map[String,Entry]=Map(seized.word ->seized, held.word->held, impounded.word->impounded)
+
+  //transferring transferring oil products to North Korea
+  private val transferring=Entry("transferring",
+    Raw("",""),
+    "",
+    SequenceX( List(
+      ("transferring-to","transferring-Ψ1-to-Ψ2")
+    )),
+    QuestionsX(
+      Map("what"->"Ψ1",
+        "whom"-> "Ψ2",
+        "who"-> "Ψ3",
+      ))
+  )
+  val dictionary:Map[String,Entry]=Map(seized.word ->seized, held.word->held, impounded.word->impounded,
+    transferring.word->transferring)
 }
 
 /*
