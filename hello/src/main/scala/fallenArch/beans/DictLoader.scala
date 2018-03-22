@@ -49,7 +49,7 @@ class DictLoader{
     Raw("",""),
     "",
     SequenceX( List(
-      ("transferring-to","transferring-Ψ1-to-Ψ2")
+      ("transferring-to","transferring Ψ1 to Ψ2")
     )),
     QuestionsX(
       Map("what"->"Ψ1",

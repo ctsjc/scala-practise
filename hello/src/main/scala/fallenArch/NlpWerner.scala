@@ -102,9 +102,10 @@ class NlpWerner {
     dict_sequence
   }
 
+  /** it should create a map of Ψ -> value from sentence */
   def createQuestionEntry(entry: Entry, sentence: Sentence): Entry = {
     val splittedSeq = entry.sequence.pairs.head._1.split("-").map(_.split(" "))
-    logger.info("createQuestionEntry :"+entry.sequence.pairs.head+"\n"+entry.questions.quest)
+    logger.info("====createQuestionEntry :"+entry.sequence.pairs.head+"\n"+entry.questions.quest)
     logger.info("splittedcSeq ")
     splittedSeq.foreach(x=> x.foreach(x=>logger.info(x)))
     var map: Map[Int, String] = Map()
@@ -115,51 +116,65 @@ class NlpWerner {
     var lastRunner=0
     if (splittedSeq.flatten.forall(sentence.text().contains(_))) {
       splittedSeq.foreach(d => {
+
         // d = is being held at
-        //println("__+++"+sentence.words.asScala.indexOfSlice(d.mkString(" ")))
         for(sublist <- sentence.words.asScala.sliding(d.length) ){
+          logger.info("-------------splittedSeq.foreach d [{}] with sentence.slide [{}] ",d.mkString(" "),sublist.mkString(" "))
           if(d.mkString(" ") == sublist.mkString(" ")) {
-            //println("slice - sublist : "+sublist+"\tindex :: "+sentence.words.asScala.indexOfSlice(sublist)+"\tsublist :::"+sentence.words.asScala.slice(lastRunner, sentence.words.asScala.indexOfSlice(sublist)).mkString(" "))
-            map = map + (mapIndex -> sentence.words.asScala.slice(lastRunner, sentence.words.asScala.indexOfSlice(sublist)).mkString(" "))
-            mapIndex+=1
+            val phrase = sentence.words.asScala.slice(lastRunner, sentence.words.asScala.indexOfSlice(sublist)).mkString(" ")
+
+            if (!phrase.isEmpty) {
+              map = map + (mapIndex -> phrase)
+              mapIndex += 1
+            }
             lastRunner=sentence.words.asScala.indexOfSlice(sublist)+d.length
           }
         }
-        //println("\tsublist :::"+sentence.words.asScala.slice(lastRunner,sentence.words().size()))
         map = map + (mapIndex -> sentence.words.asScala.slice(lastRunner,sentence.words().size()).mkString(" "))
       })
-   //   map = map + (mapIndex -> sentence.words.asScala.drop(start).mkString(" "))
-   //   map = map + (mapIndex -> sentence.words.asScala.slice(lastRunner,sentence.words().size()).mkString(" "))
-
-      //-------
     }
+
     var mq: Map[String, String] = Map()
+    logger.info(" map of phrases is created in between as ")
     map.foreach(e=>logger.info(e._1+"-"+e._2))
     var bridgeMap=splitSeqByΨ(entry.sequence.pairs.head._2)
+    logger.info(" brideMap {} ",bridgeMap)
     entry.questions.quest.foreach((e) => {
       var kk=e._2.charAt(1).toString.toInt
+      logger.info(" entry.questions.quest.foreach {} and kk {}",e, kk)
       if(bridgeMap.contains(kk)){
         if (map.contains(bridgeMap(kk)))
           mq += (e._1 -> map(bridgeMap(kk)))
       }
 
     })
+    logger.info("Prepared question map")
+    mq.foreach(e=>logger.info(e._1+"-"+e._2))
     //mq.foreach(e => println(e._1 + "-" + e._2))
     val newEntry = entry.copy(questions = QuestionsX(mq))
     newEntry
   }
 
+  /** Its a map of placeholder
+    * Ψ1-seized-Ψ2-suspected of-Ψ3-at-Ψ5-in breach of-Ψ4
+    * Expected Map
+    * Ψ1 1 1
+    * Ψ2 2 2
+    * Ψ3 3 3
+    * Ψ5 5 4
+    * Ψ4 4 5
+    *
+    * */
   def splitSeqByΨ(dict_sequence:String):Map[Int, Int]={
     logger.info("the split by Ψ : "+dict_sequence)//Ψ1-seized-Ψ2-suspected of-Ψ3-at-Ψ5-in breach of-Ψ4
 
-    var i:Int=0
+    var i:Int=1
     var mq: Map[Int, Int] = Map()
-
     dict_sequence.split(" ").foreach( x=>{
       //println(x)
       if(x.startsWith("Ψ")){
-        i+=1
         mq+=(x.charAt(1).toString.toInt -> i)
+        i+=1
       }
     })
     logger.info("splitSeqByΨ")
