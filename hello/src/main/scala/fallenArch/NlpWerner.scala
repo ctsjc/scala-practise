@@ -21,10 +21,10 @@ class NlpWerner {
     if (mv.isEmpty) {
       mv = getMainVerb(sent)
     }
-    val dict_entry: Entry = createEntry(mv)
+    val dict_entry: Entry = getEntry(mv)
     logger.info("entry {}",dict_entry)
 
-    val dict_sequence: Entry = createSequenceEntry(dict_entry, sent.text())
+    val dict_sequence: Entry = createSingleSequenceEntry(dict_entry, sent.text())
     logger.info("sequence {} ",dict_sequence)
 
     val entryX = createQuestionEntry(dict_sequence, sent)
@@ -47,18 +47,22 @@ class NlpWerner {
   }
 
   /* find the Entry class from dictionary */
-  def createEntry(mainVerb: String): Entry = {
+  def getEntry(mainVerb: String): Entry = {
     dl.dictionary(mainVerb)
   }
 
   /**
-    **/
-  def createSequenceEntry(entry: Entry, text: String): Entry = {
-    def getSequence(entry: Entry, sentence: String): Entry = {
-      val sequences = entry.sequence.pairs.map(_._1)
+    * input : dictionary Entry, input text
+    * output : Entry with single matching sequence
+    *
+    * dictionary contains lots of sequences, find out the one which is matching most with input text
+    */
+  def createSingleSequenceEntry(entry: Entry, inputText: String): Entry = {
 
-      val max_matching_sequence = sequences.map(seq => {
-        percentageMatch(sentence, seq)
+    def getSequence(entry: Entry, inputText: String): Entry = {
+      // find the sequence which has hightest matching percentage
+      val max_matching_sequence = entry.sequence.pairs.map(_._1).map(sequenceFromDictionary => {
+        percentageMatch(inputText, sequenceFromDictionary)
       }).reduceLeft((x, y) => {
         logger.info(s"$x - $y")
         if (x._1 > y._1)
@@ -70,89 +74,86 @@ class NlpWerner {
       })._3
       logger.info(s"max_matching_sequence :: $max_matching_sequence")
 
-      //println(">>>"+resp+""+dl.dictionary(verb).sequence.pairs.find(_._1==resp))
       val newEntry = entry.copy(sequence = SequenceX(List(entry.sequence.pairs.find(_._1 == max_matching_sequence).get)))
       newEntry
     }
 
-    /* returns tuple of % of similarity, count of words that matched,string that is matched. */
-    def percentageMatch(sentence: String, dictionarySequence: String): (Int, Int, String) = {
-      val l: List[String] = sentence.split(" ").toList
-      val m: List[String] = dictionarySequence.split("-").filter(!_.isEmpty).map(_.trim).toList
-      var lastFound: Int = 0
-      var curFound: Int = 0
-      var totalFound: Int = 0
-      logger.info("--------------------"+dictionarySequence)
-      for (d <- m; e <- l.sliding(d.split(" ").size)) {
-        logger.info("percentage match loop "+d+" === "+e)
-        if (d == e.mkString(" ")) {
 
-          curFound = l.indexOfSlice(e)
-          if (curFound < lastFound)
-            return ((totalFound / d.size) * 100, m.size, dictionarySequence)
-          totalFound += 1
-          lastFound = curFound
-          logger.info("totalFound "+totalFound)
-        }
-      }
-      ((totalFound / m.size) * 100, m.size, dictionarySequence)
-    }
 
-    val dict_sequence: Entry = getSequence(entry, text) //"Ψ1 have seized Ψ2 suspected of Ψ3 in violation of Ψ4"
+    val dict_sequence: Entry = getSequence(entry, inputText) //"Ψ1 have seized Ψ2 suspected of Ψ3 in violation of Ψ4"
     dict_sequence
   }
+  /* returns tuple of % of similarity, count of words that matched,string that is matched. */
+  def percentageMatch(inputSentence: String, sequenceFromDictionary: String): (Int, Int, String) = {
+    val i: List[String] = inputSentence.split(" ").toList
+    val d: List[String] = sequenceFromDictionary.split("-").filter(!_.isEmpty).map(_.trim).toList
+    var lastFound: Int = 0
+    var curFound: Int = 0
+    var totalFound: Int = 0
+    logger.info("\n"+inputSentence+"--------------------"+sequenceFromDictionary)
+    for (dd <- d; ee <- i.sliding(dd.split(" ").length)) {
+      logger.info("percentage match loop ["+dd+"] === ["+ee+"]")
+      if (dd == ee.mkString(" ")) {
+        curFound = i.indexOfSlice(ee)
+        if (curFound < lastFound)
+          return ((totalFound / dd.length) * 100, dd.length, sequenceFromDictionary)
+        totalFound += 1
+        lastFound = curFound
+        logger.info("totalFound "+totalFound)
+      }
+    }
+    ((totalFound / d.length) * 100, d.length, sequenceFromDictionary)
+  }
+  /** it should create a map of Ψ -> value from sentence
+    * parameter
+    *   entry: input entry
+    *   sentence: input text
+    *
+    * */
 
-  /** it should create a map of Ψ -> value from sentence */
-  def createQuestionEntry(entry: Entry, sentence: Sentence): Entry = {
-    val splittedSeq = entry.sequence.pairs.head._1.split("-").map(_.split(" "))
+  def createQuestionEntry(entry: Entry, inputText: Sentence): Entry = {
+    val splittedSeq :List[List[String]] = entry.sequence.pairs.head._1.split("-").map(_.split(" ").toList).toList
     logger.info("====createQuestionEntry :"+entry.sequence.pairs.head+"\n"+entry.questions.quest)
     logger.info("splittedcSeq ")
     splittedSeq.foreach(x=> x.foreach(x=>logger.info(x)))
     var map: Map[Int, String] = Map()
-    var tracker: Int = 0
-    var start: Int = 0
-    var end: Int = 0
     var mapIndex = 1
     var lastRunner=0
-    if (splittedSeq.flatten.forall(sentence.text().contains(_))) {
-      splittedSeq.foreach(d => {
+    // check sentence contains the word that belongs to dictionary
+    if (splittedSeq.flatten.forall(inputText.text().contains(_))) {
 
-        // d = is being held at
-        for(sublist <- sentence.words.asScala.sliding(d.length) ){
-          logger.info("-------------splittedSeq.foreach d [{}] with sentence.slide [{}] ",d.mkString(" "),sublist.mkString(" "))
-          if(d.mkString(" ") == sublist.mkString(" ")) {
-            val phrase = sentence.words.asScala.slice(lastRunner, sentence.words.asScala.indexOfSlice(sublist)).mkString(" ")
+      splittedSeq.foreach(  d => {
+        for(sublist <- inputText.words.asScala.sliding(d.length)
+            if d.mkString(" ") == sublist.mkString(" ")){
 
-            if (!phrase.isEmpty) {
-              map = map + (mapIndex -> phrase)
-              mapIndex += 1
-            }
-            lastRunner=sentence.words.asScala.indexOfSlice(sublist)+d.length
+          val phrase = inputText.words.asScala.slice(lastRunner, inputText.words.asScala.indexOfSlice(sublist)).mkString(" ")
+          if (!phrase.isEmpty) {
+            map = map + (mapIndex -> phrase)
+            mapIndex += 1
           }
+          lastRunner=inputText.words.asScala.indexOfSlice(sublist)+d.length
         }
-        map = map + (mapIndex -> sentence.words.asScala.slice(lastRunner,sentence.words().size()).mkString(" "))
-      })
-    }
-
-    var mq: Map[String, String] = Map()
+        map = map + (mapIndex -> inputText.words.asScala.slice(lastRunner,inputText.words().size()).mkString(" "))
+      })//foreach
+    }//end if
     logger.info(" map of phrases is created in between as ")
     map.foreach(e=>logger.info(e._1+"-"+e._2))
-    var bridgeMap=splitSeqByΨ(entry.sequence.pairs.head._2)
-    logger.info(" brideMap {} ",bridgeMap)
-    entry.questions.quest.foreach((e) => {
-      var kk=e._2.charAt(1).toString.toInt
-      logger.info(" entry.questions.quest.foreach {} and kk {}",e, kk)
-      if(bridgeMap.contains(kk)){
-        if (map.contains(bridgeMap(kk)))
-          mq += (e._1 -> map(bridgeMap(kk)))
-      }
 
-    })
+    val newEntry:Entry = entry.copy(questions = QuestionsX(bridge(entry,map)))
     logger.info("Prepared question map")
-    mq.foreach(e=>logger.info(e._1+"-"+e._2))
+    newEntry.questions.quest.foreach(e=>logger.info(e._1+"-"+e._2))
     //mq.foreach(e => println(e._1 + "-" + e._2))
-    val newEntry = entry.copy(questions = QuestionsX(mq))
     newEntry
+  }
+
+  def bridge(entry: Entry,map: Map[Int, String]):Map[String,String] = {
+
+    var bridgeMap = splitSeqByΨ(entry.sequence.pairs.head._2)
+    val mq= for (elem <- entry.questions.quest
+                 ; psiVal = elem._2.charAt(1).toString.toInt;
+                 if bridgeMap.contains(psiVal) && map.contains(bridgeMap(psiVal))
+    ) yield elem._1 -> map(bridgeMap(psiVal))
+    mq
   }
 
   /** Its a map of placeholder
@@ -179,7 +180,6 @@ class NlpWerner {
     })
     logger.info("splitSeqByΨ")
     mq.foreach(e=>logger.info(e._1+"->"+e._2))
-
     mq
   }
 
