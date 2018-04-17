@@ -2,8 +2,9 @@ package fallenArch
 
 import org.scalatest.{BeforeAndAfter, FlatSpec, Matchers}
 
-
-class NlpWernerTest extends FlatSpec with Matchers with BeforeAndAfter {
+/**
+  * make a single test which takes the statements */
+class WernerRunner extends FlatSpec with Matchers with BeforeAndAfter {
   var nlpWerner:NlpWerner=_
 
   before {
@@ -12,7 +13,8 @@ class NlpWernerTest extends FlatSpec with Matchers with BeforeAndAfter {
 
   //ignore
   "ignore"  should "sentence 1" in {
-    val text = "South Korean authorities have seized a second vessel suspected of transferring oil products to North Korea in violation of international sanctions."
+    val text = "South Korean authorities have seized a second vessel suspected of transferring " +
+      "oil products to North Korea in violation of international sanctions."
     var entryX=nlpWerner.getEntry(text,"seized")
     //println(entryX.questions.quest)
     println()
@@ -76,5 +78,5 @@ class NlpWernerTest extends FlatSpec with Matchers with BeforeAndAfter {
       entryX.questions.quest("under which law") shouldEqual  "of U.N. sanctions"
   }
 
-
+  
 }

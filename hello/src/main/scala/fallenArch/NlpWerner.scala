@@ -15,7 +15,7 @@ class NlpWerner {
 
 
   def getEntry(text: String, mainVerb: String): Entry = {
-    logger.info("check the loggins is working or not...")
+    logger.info("check the logging is working or not...")
     val sent = toSentence(text)
     var mv = mainVerb
     if (mv.isEmpty) {
@@ -119,6 +119,7 @@ class NlpWerner {
     var map: Map[Int, String] = Map()
     var mapIndex = 1
     var lastRunner=0
+
     // check sentence contains the word that belongs to dictionary
     if (splittedSeq.flatten.forall(inputText.text().contains(_))) {
 
