@@ -11,7 +11,7 @@ class NlpWernerTest extends FlatSpec with Matchers with BeforeAndAfter {
   }
 
   //ignore
-  "ignore"  should "sentence 1" in {
+  "its "  should "sentence 1" in {
     val text = "South Korean authorities have seized a second vessel suspected of transferring oil products to North Korea in violation of international sanctions."
     var entryX=nlpWerner.getEntry(text,"seized")
     //println(entryX.questions.quest)

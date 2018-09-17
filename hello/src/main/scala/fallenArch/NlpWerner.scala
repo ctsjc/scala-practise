@@ -1,33 +1,40 @@
 package fallenArch
 
+import java.io.{Reader, StringReader}
+
 import com.typesafe.scalalogging.Logger
-import edu.stanford.nlp.ling.CoreAnnotations
+import edu.stanford.nlp.ling.{CoreAnnotations, SentenceUtils}
+import edu.stanford.nlp.process.DocumentPreprocessor
 import edu.stanford.nlp.simple.Sentence
 import fallenArch.beans.{DictLoader, Entry, QuestionsX, SequenceX}
+import org.apache.commons.lang3.StringUtils
 
 import scala.collection.JavaConverters._
+import scala.collection.mutable.ListBuffer
 
 class NlpWerner {
 
   val logger = Logger[NlpWerner]
 
-  val dl: DictLoader = new DictLoader
+  val dictionaryLoader: DictLoader = new DictLoader
 
 
-  def getEntry(text: String, mainVerb: String): Entry = {
+
+  def getEntry(text: String, mainVerb1: String): Entry = {
     logger.info("check the logging is working or not...")
-    val sent = toSentence(text)
-    var mv = mainVerb
-    if (mv.isEmpty) {
-      mv = getMainVerb(sent)
+    val sentence = toSentence(text)
+    var mainVerb = mainVerb1
+    if (StringUtils.isEmpty(mainVerb)) {
+      mainVerb = getMainVerb(sentence)
     }
-    val dict_entry: Entry = getEntry(mv)
-    logger.info("entry {}",dict_entry)
+    // Get the main verb's dictionary entry from dictionary
+    val mainVerbEntry: Entry = getEntry(mainVerb)
+    logger.info("entry {}",mainVerbEntry)
 
-    val dict_sequence: Entry = createSingleSequenceEntry(dict_entry, sent.text())
-    logger.info("sequence {} ",dict_sequence)
+    val mainVerbSingleSequenceEntry: Entry = getSingleSequenceEntry(mainVerbEntry, sentence.text())
+    logger.info("sequence {} ",mainVerbSingleSequenceEntry)
 
-    val entryX = createQuestionEntry(dict_sequence, sent)
+    val entryX = createQuestionEntry(mainVerbSingleSequenceEntry, sentence)
     logger.info("q-entry {}",entryX)
 
     entryX
@@ -48,7 +55,7 @@ class NlpWerner {
 
   /* find the Entry class from dictionary */
   def getEntry(mainVerb: String): Entry = {
-    dl.dictionary(mainVerb)
+    dictionaryLoader.dictionary(mainVerb)
   }
 
   /**
@@ -57,13 +64,13 @@ class NlpWerner {
     *
     * dictionary contains lots of sequences, find out the one which is matching most with input text
     */
-  def createSingleSequenceEntry(entry: Entry, inputText: String): Entry = {
+  def getSingleSequenceEntry(entry: Entry, inputText: String): Entry = {
 
     def getSequence(entry: Entry, inputText: String): Entry = {
-      // find the sequence which has hightest matching percentage
+      // find the sequence which has highest matching percentage
       val max_matching_sequence = entry.sequence.pairs.map(_._1).map(sequenceFromDictionary => {
         percentageMatch(inputText, sequenceFromDictionary)
-      }).reduceLeft((x, y) => {
+      }).reduceLeft((x, y) => { // find the max from the list
         logger.info(s"$x - $y")
         if (x._1 > y._1)
           x
@@ -86,7 +93,7 @@ class NlpWerner {
   /* returns tuple of % of similarity, count of words that matched,string that is matched. */
   def percentageMatch(inputSentence: String, sequenceFromDictionary: String): (Int, Int, String) = {
     val i: List[String] = inputSentence.split(" ").toList
-    val d: List[String] = sequenceFromDictionary.split("-").filter(!_.isEmpty).map(_.trim).toList
+    val d: List[String] = sequenceFromDictionary.split("-").filter(! _.isEmpty).map(_.trim).toList
     var lastFound: Int = 0
     var curFound: Int = 0
     var totalFound: Int = 0
@@ -115,7 +122,7 @@ class NlpWerner {
     val splittedSeq :List[List[String]] = entry.sequence.pairs.head._1.split("-").map(_.split(" ").toList).toList
     logger.info("====createQuestionEntry :"+entry.sequence.pairs.head+"\n"+entry.questions.quest)
     logger.info("splittedcSeq ")
-    splittedSeq.foreach(x=> x.foreach(x=>logger.info(x)))
+    splittedSeq.foreach(x => x.foreach(x=>logger.info(x)))
     var map: Map[Int, String] = Map()
     var mapIndex = 1
     var lastRunner=0
@@ -125,15 +132,14 @@ class NlpWerner {
 
       splittedSeq.foreach(  d => {
         for(sublist <- inputText.words.asScala.sliding(d.length)
-            if d.mkString(" ") == sublist.mkString(" ")){
-
-          val phrase = inputText.words.asScala.slice(lastRunner, inputText.words.asScala.indexOfSlice(sublist)).mkString(" ")
-          if (!phrase.isEmpty) {
-            map = map + (mapIndex -> phrase)
-            mapIndex += 1
+          if d.mkString(" ") == sublist.mkString(" ")){
+            val phrase = inputText.words.asScala.slice(lastRunner, inputText.words.asScala.indexOfSlice(sublist)).mkString(" ")
+            if (!phrase.isEmpty) {
+              map = map + (mapIndex -> phrase)
+              mapIndex += 1
+            }
+            lastRunner=inputText.words.asScala.indexOfSlice(sublist)+d.length
           }
-          lastRunner=inputText.words.asScala.indexOfSlice(sublist)+d.length
-        }
         map = map + (mapIndex -> inputText.words.asScala.slice(lastRunner,inputText.words().size()).mkString(" "))
       })//foreach
     }//end if
@@ -184,7 +190,14 @@ class NlpWerner {
     mq
   }
 
+  def passageToSentences(passage:String):ListBuffer[String] = {
+    var sentenceList=new ListBuffer[String]
+    var reader: Reader = new StringReader(passage)
+    var dp: DocumentPreprocessor = new DocumentPreprocessor(reader)
 
+    dp.forEach(v => sentenceList += SentenceUtils.listToString(v))
+    sentenceList
+  }
 
   /*val pos=sent.posTags()
   pos.forEach(println(_))

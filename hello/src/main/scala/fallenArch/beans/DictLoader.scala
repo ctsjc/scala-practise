@@ -57,7 +57,28 @@ class DictLoader{
         "who"-> "Ψ3",
       ))
   )
-  val dictionary:Map[String,Entry]=Map(seized.word ->seized, held.word->held, impounded.word->impounded,
+
+  //A marine official said the seizure had happened recently .
+  //DT JJ NN VBD DT NN VBD VBN RB.
+  private val said=Entry(
+    "said",
+    Raw("",""),
+    "to express in words; state; declare; word:",
+    SequenceX( List(
+      ("said","Ψ1 said Ψ2")
+    )),
+    QuestionsX(
+      Map("who said"->"Ψ1",
+        "what said"-> "Ψ2"
+      ))
+  )
+
+
+  val dictionary:Map[String,Entry]=Map(
+    seized.word ->seized,
+    held.word->held,
+    said.word->said,
+    impounded.word->impounded,
     transferring.word->transferring)
 }
 

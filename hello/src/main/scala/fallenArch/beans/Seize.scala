@@ -1,6 +1,8 @@
 package fallenArch.beans
 
-/*{
+/*
+ for verb : take
+{
   "raw": {
     "typex":"take",
     "explore":"x take y."
@@ -23,6 +25,7 @@ case class Entry(word:String,
                  meaning:String,
                  sequence:SequenceX,
                  questions:QuestionsX )
+
 case class Raw(typex:String, explore:String)
 case class SequenceX(pairs: List[(String,String)] )
 case class QuestionsX(quest:Map[String,String])
