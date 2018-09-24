@@ -4,8 +4,10 @@ import java.io.{Reader, StringReader}
 
 import com.typesafe.scalalogging.Logger
 import edu.stanford.nlp.ling.{CoreAnnotations, SentenceUtils}
+import edu.stanford.nlp.parser.nndep.DependencyParser
 import edu.stanford.nlp.process.DocumentPreprocessor
 import edu.stanford.nlp.simple.Sentence
+import edu.stanford.nlp.tagger.maxent.MaxentTagger
 import fallenArch.beans.{DictLoader, Entry, QuestionsX, SequenceX}
 import org.apache.commons.lang3.StringUtils
 
@@ -49,7 +51,14 @@ class NlpWerner {
   def getMainVerb(sentence: Sentence): String = {
     val x: CoreAnnotations.TextAnnotation = new CoreAnnotations.TextAnnotation()
     val y = sentence.dependencyGraph().getFirstRoot.getString(x.getClass)
-    println("main verb found to be :: "+y)
+    val posTag= sentence.dependencyGraph().getFirstRoot.getString(classOf[CoreAnnotations.PartOfSpeechAnnotation])
+    val looksValid = posTag.startsWith("V")
+    val posMeaning = PosMeaning.getLable(posTag)
+    if(looksValid)
+      return y
+    // find the main verb then.
+
+    println(s"NLP Lib findings \nRoot :: $y\n POS :: $posTag \t[ $posMeaning]\n Looks Valid ? :: $looksValid")
     y
   }
 
@@ -198,6 +207,18 @@ class NlpWerner {
     dp.forEach(v => sentenceList += SentenceUtils.listToString(v))
     sentenceList
   }
+
+  def noAdjSentence(fullSentence:String)={
+    var tagger=new MaxentTagger("res/english-left3words-distsim.tagger")
+    var parser=DependencyParser.loadFromModelFile(DependencyParser.DEFAULT_MODEL)
+    val tagged=tagger.tagString(fullSentence).split(" ").map(_.split("_")).map(t=>(t(0),t(1)))
+    val tagged1=tagged.filter(_._2.startsWith("JJ"))
+    for( (k,v) <- tagged1) {
+      print(k+"\n ")
+    }
+    tagged
+  }
+
 
   /*val pos=sent.posTags()
   pos.forEach(println(_))
